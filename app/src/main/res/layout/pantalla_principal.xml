@@ -51,7 +51,8 @@
         android:textColor="@android:color/background_light"
         android:background="@drawable/login_button"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:onClick="showPopUp" />
 
     <Button
         android:layout_width="fill_parent"
