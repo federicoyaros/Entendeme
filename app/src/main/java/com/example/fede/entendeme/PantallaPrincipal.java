@@ -20,7 +20,7 @@ import android.widget.Toast;
 /**
  * Created by fede on 2/7/2016.
  */
-public class PantallaPrincipal extends Activity implements OnMenuItemClickListener{
+/*public class PantallaPrincipal extends Activity implements OnMenuItemClickListener{
 
     private Button btnConvertirTexto;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -70,4 +70,4 @@ public class PantallaPrincipal extends Activity implements OnMenuItemClickListen
             startActivity(intent);
         }
     }*/
-}
+//}

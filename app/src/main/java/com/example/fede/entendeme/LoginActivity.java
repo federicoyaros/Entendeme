@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
-                                Intent i = new Intent(getBaseContext(), PantallaPrincipal.class);
+                                Intent i = new Intent(getBaseContext(), MainActivity.class);
                                 startActivity(i);
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
