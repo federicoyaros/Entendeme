@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nuevo usuario"
+        android:id="@+id/textView2"
+        android:layout_weight="0.10"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@android:color/background_light"
+        android:textSize="@dimen/abc_text_size_title_material" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etUsername"
+        android:background="@color/highlighted_text_material_dark"
+        android:textColorHint="@android:color/background_light"
+        android:textColor="@android:color/background_light"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="0.15"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:hint="Nombre de usuario"
+        android:maxLength="30" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etMail"
+        android:background="@color/highlighted_text_material_dark"
+        android:textColorHint="@android:color/background_light"
+        android:textColor="@android:color/background_light"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.15"
+        android:paddingLeft="10dp"
+        android:hint="Mail"
+        android:maxLength="30" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/etPassword"
+        android:background="@color/highlighted_text_material_dark"
+        android:textColorHint="@android:color/background_light"
+        android:textColor="@android:color/background_light"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.15"
+        android:paddingLeft="10dp"
+        android:password="true"
+        android:typeface="normal"
+        android:hint="Contraseña"
+        android:maxLength="30" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REGISTRARSE"
+        android:id="@+id/btnRegister"
+        android:layout_weight="0.08"
+        android:background="@drawable/login_button"
+        android:textColor="@android:color/background_light"
+        android:textSize="@dimen/abc_text_size_title_material"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp" />
+</LinearLayout>

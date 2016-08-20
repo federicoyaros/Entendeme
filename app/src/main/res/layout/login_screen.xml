@@ -6,23 +6,22 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSalir"
-        android:layout_weight="0.09"
-        android:src="@drawable/flecha_izquierda"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_marginBottom="15dp"
-        android:onClick="onClickSalir" />
+        android:id="@+id/imageView2"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.05"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/logo_entendeme" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/etUsuario"
-        android:hint="Nombre de usuario / Email"
+        android:id="@+id/etUsername"
+        android:hint="Nombre de usuario"
         android:layout_weight="0.05"
         android:background="@color/highlighted_text_material_dark"
         android:paddingLeft="10dp"
@@ -30,50 +29,40 @@
         android:ellipsize="end"
         android:lines="1"
         android:textColor="@android:color/background_light"
-        android:typeface="normal" />
+        android:typeface="normal"
+        android:layout_marginTop="30dp"
+        android:maxLength="30" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/etContraseña"
+        android:id="@+id/etPassword"
         android:hint="Contraseña"
         android:layout_weight="0.05"
         android:password="true"
         android:background="@color/highlighted_text_material_dark"
         android:paddingLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:textColorHint="@android:color/background_light"
         android:ellipsize="end"
         android:lines="1"
         android:textColor="@android:color/background_light"
         android:typeface="normal"
         android:elegantTextHeight="false"
-        android:inputType="textPassword" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recordarme"
-        android:id="@+id/chkRecordarme"
-        android:layout_weight="0.05"
-        android:checked="false"
-        android:textColor="@android:color/background_light"
-        android:buttonTint="@android:color/background_light"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp" />
+        android:inputType="textPassword"
+        android:maxLength="30" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="ENTRAR"
-        android:id="@+id/btnEntrar"
+        android:id="@+id/btnLogin"
         android:layout_weight="0.02"
         android:background="@drawable/login_button"
         android:textColor="@android:color/background_light"
-        android:layout_marginTop="20dp"
-        android:textSize="@dimen/abc_text_size_title_material"
-        android:onClick="onClickEntrar" />
+        android:layout_marginTop="30dp"
+        android:textSize="@dimen/abc_text_size_title_material" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -86,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="¿Olvidó su contraseña?"
-            android:id="@+id/btnOlvidoContraseña"
+            android:id="@+id/btnForgotPassword"
             android:layout_weight="0.09"
             android:background="?android:attr/selectableItemBackground"
             android:textColor="@android:color/background_light" />
@@ -95,9 +84,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registrarse"
-            android:id="@+id/btnRegistrarse"
+            android:id="@+id/btnRegister"
             android:layout_weight="0.09"
             android:background="?android:attr/selectableItemBackground"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:onClick="onClickRegister" />
     </LinearLayout>
 </LinearLayout>

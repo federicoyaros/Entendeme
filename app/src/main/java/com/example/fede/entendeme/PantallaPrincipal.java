@@ -60,8 +60,8 @@ public class PantallaPrincipal extends Activity implements OnMenuItemClickListen
         startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    //@Override
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -69,5 +69,5 @@ public class PantallaPrincipal extends Activity implements OnMenuItemClickListen
             intent.putExtra("foto", imageBitmap);
             startActivity(intent);
         }
-    }
+    }*/
 }
