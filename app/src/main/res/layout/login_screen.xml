@@ -77,7 +77,8 @@
             android:id="@+id/btnForgotPassword"
             android:layout_weight="0.09"
             android:background="?android:attr/selectableItemBackground"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:onClick="onClickRecover" />
 
         <Button
             android:layout_width="wrap_content"

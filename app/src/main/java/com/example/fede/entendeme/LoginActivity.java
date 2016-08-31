@@ -39,50 +39,43 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
 
-                if(username.equals("") || password.equals(""))
-                {
+                if (username.equals("") || password.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setMessage("Debe completar todos los datos")
                             .setNegativeButton("Volver", null)
                             .create()
                             .show();
-                }
-                else
-                {
+                } else {
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
 
-                            if (success) {
-                                Intent i = new Intent(getBaseContext(), MainActivity.class);
-                                startActivity(i);
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Datos incorrectos")
-                                        .setNegativeButton("Volver", null)
-                                        .create()
-                                        .show();
+                                if (success) {
+                                    Intent i = new Intent(getBaseContext(), MainActivity.class);
+                                    startActivity(i);
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                    builder.setMessage("Datos incorrectos")
+                                            .setNegativeButton("Volver", null)
+                                            .create()
+                                            .show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                };
+                    };
 
-                LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
-            }
+                    LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                    queue.add(loginRequest);
+                }
             }
         });
-    }
-
-    public void onClickSalir(View view){
-        finish();
     }
 
     public void onClickRegister (View view)
@@ -91,5 +84,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void onClickRecover (View view)
+    {
+        Intent i = new Intent(getBaseContext(), RecoverActivity.class);
+        startActivity(i);
+    }
+
 
 }
+
