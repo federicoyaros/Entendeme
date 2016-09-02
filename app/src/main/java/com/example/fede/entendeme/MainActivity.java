@@ -1,11 +1,12 @@
 package com.example.fede.entendeme;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,14 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import static com.example.fede.entendeme.Constants.*;
 
 public class MainActivity extends ActionBarActivity {
 
     private ArrayList<HashMap<String, String>> list;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +129,10 @@ public class MainActivity extends ActionBarActivity {
         builder.setMessage("¿Qué imagen desea convertir?")
                 .setPositiveButton("Tomar foto", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        }
                     }
                 })
                 .setNegativeButton("Adjuntar imagen", new DialogInterface.OnClickListener() {
@@ -140,6 +145,17 @@ public class MainActivity extends ActionBarActivity {
         alert.setTitle("Seleccione");
         alert.show();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Intent intent = new Intent(this, CheckPhoto.class);
+            intent.putExtra("BitmapImage", imageBitmap);
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.fede.entendeme;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +8,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickRecover (View view)
     {
-        Intent i = new Intent(getBaseContext(), RecoverActivity.class);
+        Intent i = new Intent(getBaseContext(), Prueba.class);
         startActivity(i);
     }
 

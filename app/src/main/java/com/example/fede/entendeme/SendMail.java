@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -61,7 +63,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("PONER MAIL", "PONER PASSWORD");
+                        return new PasswordAuthentication("entendemeapp@gmail.com", "entendemepassword");
                     }
                 });
 
@@ -69,7 +71,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
 
             MimeMessage mm = new MimeMessage(session);
 
-            mm.setFrom(new InternetAddress("PONER MAIL"));
+            mm.setFrom(new InternetAddress("entendemeapp@gmail.com"));
 
             mm.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 
