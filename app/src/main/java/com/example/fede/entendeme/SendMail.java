@@ -63,7 +63,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("entendemeapp@gmail.com", "entendemepassword");
+                        return new PasswordAuthentication("x", "x");
                     }
                 });
 
@@ -71,7 +71,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
 
             MimeMessage mm = new MimeMessage(session);
 
-            mm.setFrom(new InternetAddress("entendemeapp@gmail.com"));
+            mm.setFrom(new InternetAddress("x"));
 
             mm.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 
