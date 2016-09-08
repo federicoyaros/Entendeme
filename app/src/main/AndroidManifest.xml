@@ -69,7 +69,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".CheckPhoto2">
+        <activity android:name=".CheckAdjunt">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ConvertedText">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -12,6 +12,7 @@
         android:layout_weight="0.8"
         android:layout_marginTop="30dp"
         android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         android:maxWidth="250dp"
         android:maxHeight="250dp" />
 
@@ -47,7 +48,7 @@
             android:src="@drawable/logo_ok"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:onClick="onClickContinuePhoto" />
+            android:onClick="onClickContinueAdjunt" />
     </LinearLayout>
 
 </LinearLayout>

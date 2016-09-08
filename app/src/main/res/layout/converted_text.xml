@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
-    android:weightSum="1">
+    android:background="@drawable/login_background">
 
-    <ImageView
-        android:layout_width="fill_parent"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imgPhoto"
-        android:layout_weight="0.8"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/etConvertedText"
         android:layout_marginTop="30dp"
-        android:adjustViewBounds="true"
-        android:maxWidth="250dp"
-        android:maxHeight="250dp" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:lines="19"
+        android:background="@color/highlighted_text_material_dark"
+        android:textColor="@android:color/background_light"
+        android:gravity="top|left"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -21,33 +24,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.15"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:id="@+id/btnCut"
-            android:src="@drawable/logo_cut"
+            android:id="@+id/btnShare"
+            android:src="@drawable/logo_share"
             android:layout_weight="1"
             android:background="@android:color/transparent" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:id="@+id/btnTakeOtherPhoto"
-            android:src="@drawable/logo_camera"
+            android:id="@+id/btnSave"
+            android:src="@drawable/logo_save"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:onClick="onClickTakeOtherPhoto" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/btnOk"
-            android:src="@drawable/logo_ok"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:onClick="onClickContinuePhoto" />
     </LinearLayout>
 
 </LinearLayout>

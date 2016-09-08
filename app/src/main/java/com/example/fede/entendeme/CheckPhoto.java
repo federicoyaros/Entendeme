@@ -1,13 +1,15 @@
 package com.example.fede.entendeme;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -43,6 +45,27 @@ public class CheckPhoto extends ActionBarActivity {
         }
     }
 
+    public void onClickContinuePhoto(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("¿Está seguro que desea convertir esta imagen?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.setTitle("Confirmación");
+        alert.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -52,5 +75,24 @@ public class CheckPhoto extends ActionBarActivity {
             intent.putExtra("BitmapImage", imageBitmap);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case R.id.action_settings:
+            return(true);
+        case R.id.action_logout:
+            Intent i = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(i);
+            return(true);
+    }
+        return(super.onOptionsItemSelected(item));
     }
 }

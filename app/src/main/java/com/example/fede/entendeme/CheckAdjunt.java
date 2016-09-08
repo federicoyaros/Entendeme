@@ -1,26 +1,23 @@
 package com.example.fede.entendeme;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import java.util.NoSuchElementException;
 
 /**
  * Created by fede on 2/9/2016.
  */
-public class CheckPhoto2 extends ActionBarActivity {
+public class CheckAdjunt extends ActionBarActivity {
     private ImageView imgPhoto;
     private ImageButton btnCut, btnTakeOtherPhoto, btnOk;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -28,7 +25,7 @@ public class CheckPhoto2 extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.check_photo);
+        setContentView(R.layout.check_adjunt);
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         btnCut = (ImageButton) findViewById(R.id.btnCut);
@@ -48,6 +45,27 @@ public class CheckPhoto2 extends ActionBarActivity {
         }
     }
 
+    public void onClickContinueAdjunt(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("¿Está seguro que desea convertir esta imagen?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.setTitle("Confirmación");
+        alert.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -57,5 +75,24 @@ public class CheckPhoto2 extends ActionBarActivity {
             intent.putExtra("BitmapImage", imageBitmap);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case R.id.action_settings:
+            return(true);
+        case R.id.action_logout:
+            Intent i = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(i);
+            return(true);
+    }
+        return(super.onOptionsItemSelected(item));
     }
 }

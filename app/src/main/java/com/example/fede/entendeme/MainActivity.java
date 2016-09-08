@@ -2,17 +2,12 @@ package com.example.fede.entendeme;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -199,7 +194,7 @@ public class MainActivity extends ActionBarActivity {
                     startActivity(i);*/
 
                     Uri imageUri = data.getData();
-                    Intent i = new Intent(this, CheckPhoto2.class);
+                    Intent i = new Intent(this, CheckAdjunt.class);
                     i.putExtra("ImageUri", imageUri);
                     startActivity(i);
                 }
