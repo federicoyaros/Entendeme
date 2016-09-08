@@ -19,8 +19,9 @@ import android.widget.ImageView;
  */
 public class CheckAdjunt extends ActionBarActivity {
     private ImageView imgPhoto;
-    private ImageButton btnCut, btnTakeOtherPhoto, btnOk;
+    private ImageButton btnCut, btnOk, btnAdjuntOtherPhoto;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static int SELECTED_PICTURE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,20 +30,20 @@ public class CheckAdjunt extends ActionBarActivity {
 
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
         btnCut = (ImageButton) findViewById(R.id.btnCut);
-        btnTakeOtherPhoto = (ImageButton) findViewById(R.id.btnTakeOtherPhoto);
+        btnAdjuntOtherPhoto = (ImageButton) findViewById(R.id.btnAdjuntOtherPhoto);
         btnOk = (ImageButton) findViewById(R.id.btnOk);
         Bundle extras = getIntent().getExtras();
         Intent intent = getIntent();
         Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
-    }
 
-    public void onClickTakeOtherPhoto(View view)
-    {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        btnAdjuntOtherPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECTED_PICTURE);
+            }
+        });
     }
 
     public void onClickContinueAdjunt(View view)
@@ -68,12 +69,11 @@ public class CheckAdjunt extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Intent intent = new Intent(this, CheckPhoto.class);
-            intent.putExtra("BitmapImage", imageBitmap);
-            startActivity(intent);
+        if (requestCode == SELECTED_PICTURE && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+                    Intent i = new Intent(this, CheckAdjunt.class);
+                    i.putExtra("ImageUri", imageUri);
+                    startActivity(i);
         }
     }
 

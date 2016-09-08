@@ -35,11 +35,10 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:id="@+id/btnTakeOtherPhoto"
-            android:src="@drawable/logo_camera"
+            android:id="@+id/btnAdjuntOtherPhoto"
+            android:src="@drawable/logo_adjunt"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:onClick="onClickTakeOtherPhoto" />
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:layout_width="wrap_content"
