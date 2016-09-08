@@ -35,6 +35,17 @@ public class CheckPhoto extends ActionBarActivity {
         Intent intent = getIntent();
         Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
         imgPhoto.setImageBitmap(imageBitmap);
+
+        btnCut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CheckPhoto.this);
+                builder.setMessage("En construcción")
+                        .setNegativeButton("Volver", null)
+                        .create()
+                        .show();
+            }
+        });
     }
 
     public void onClickTakeOtherPhoto(View view)
@@ -87,6 +98,8 @@ public class CheckPhoto extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
+            Intent intent = new Intent(getBaseContext(), Settings.class);
+            startActivity(intent);
             return(true);
         case R.id.action_logout:
             Intent i = new Intent(getBaseContext(), LoginActivity.class);

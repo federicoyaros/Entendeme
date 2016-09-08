@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="menu">
-        <item>Editar</item>>
         <item>Compartir</item>
         <item>Eliminar</item>
     </string-array>>

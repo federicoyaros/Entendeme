@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import static com.example.fede.entendeme.Constants.*;
 
@@ -86,16 +87,16 @@ public class MainActivity extends ActionBarActivity {
 
         registerForContextMenu(listView);
 
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
-                int pos=position+1;
-                Toast.makeText(MainActivity.this, Integer.toString(pos)+" Clicked", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                startActivity(i);
             }
 
-        });*/
+        });
     }
 
     @Override
@@ -216,6 +217,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
+            Intent intent = new Intent(getBaseContext(), Settings.class);
+            startActivity(intent);
             return(true);
         case R.id.action_logout:
             Intent i = new Intent(getBaseContext(), LoginActivity.class);

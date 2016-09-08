@@ -64,6 +64,8 @@ public class ConvertedText extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
+            Intent intent = new Intent(getBaseContext(), Settings.class);
+            startActivity(intent);
             return(true);
         case R.id.action_logout:
             Intent i = new Intent(getBaseContext(), LoginActivity.class);
