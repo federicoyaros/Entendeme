@@ -12,6 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by fede on 2/9/2016.
@@ -21,6 +34,8 @@ public class CheckPhoto extends ActionBarActivity {
     private ImageView imgPhoto;
     private ImageButton btnCut, btnTakeOtherPhoto, btnOk;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    public RequestQueue fRequestQueue;
+    private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,7 @@ public class CheckPhoto extends ActionBarActivity {
         Intent intent = getIntent();
         Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
         imgPhoto.setImageBitmap(imageBitmap);
+        fRequestQueue = Volley.newRequestQueue(CheckPhoto.this);
 
         btnCut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +78,34 @@ public class CheckPhoto extends ActionBarActivity {
         builder.setMessage("¿Está seguro que desea convertir esta imagen?")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent i = new Intent(getBaseContext(), ConvertedText.class);
-                        startActivity(i);
+                        Entendeme app = ((Entendeme)getApplicationContext());
+
+                        Map<String, String> ConvRequest= new HashMap<String, String>();
+                        ConvRequest.put("nombreUsuario", app.getUsuario());
+                        ConvRequest.put("nombreImagen", "test");
+                        ConvRequest.put("formatoImagen", ".jpg");
+
+                        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                                CONV_REQUEST_URL, new JSONObject(ConvRequest),
+                                new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+
+                                        //onConnectionFinished();
+
+                                        Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                                        startActivity(i);
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                onConnectionFailed(error.toString());
+                            }
+                        });
+
+                        fRequestQueue.add(jsonObjReq);
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -107,5 +149,10 @@ public class CheckPhoto extends ActionBarActivity {
             return(true);
     }
         return(super.onOptionsItemSelected(item));
+    }
+
+    public void onConnectionFailed(String error) {
+        this.setProgressBarIndeterminateVisibility(false);
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 }

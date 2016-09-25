@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_background">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewConversions"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/background_light"
+        android:layout_alignParentLeft="true" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnFloatingAction"
         android:layout_width="wrap_content"
@@ -18,13 +26,5 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         android:onClick="onClickFAB" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listViewConversions"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/background_light"
-        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

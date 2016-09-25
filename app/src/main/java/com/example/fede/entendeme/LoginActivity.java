@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 if (success) {
+                                    Entendeme app = ((Entendeme)getApplicationContext());
+                                    app.setUsuario(etUsername.getText().toString());
                                     Intent i = new Intent(getBaseContext(), MainActivity.class);
                                     startActivity(i);
                                 } else {
