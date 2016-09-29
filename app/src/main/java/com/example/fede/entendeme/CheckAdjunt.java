@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,9 +23,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import java.util.HashMap;
+
 import java.util.Map;
 
 /**
@@ -94,10 +98,52 @@ public class CheckAdjunt extends ActionBarActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
 
+                                        String url = null;
+                                        try {
+                                            url = response.getString( "rutaImagen" );
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
+
+
+
+                                            @Override
+                                            public void onResponse(NetworkResponse response) {
+                                                //onConnectionFinished();
+                                                Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                                                startActivity(i);
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                onConnectionFailed(error.toString());
+                                            }
+                                        }) {
+                                            @Override
+                                            protected Map<String, String> getParams() {
+                                                Map<String, String> params = new HashMap<>();
+                                                //params.put("api_token", "gh659gjhvdyudo973823tt9gvjf7i6ric75r76");
+                                                return params;
+                                            }
+
+                                            @Override
+                                            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
+                                                Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
+                                                // file name could found file base or direct access from real path
+                                                // for now just get bitmap data from ImageView
+                                                //params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), mAvatarImage.getDrawable()), "image/jpeg"));
+                                                params.put("file", new DataPart("file_cover.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), imgPhoto.getDrawable()), "image/jpeg"));
+
+                                                return params;
+                                            }
+                                        };
+                                        fRequestQueue.add(multipartRequest);
+
                                         //onConnectionFinished();
 
-                                        Intent i = new Intent(getBaseContext(), ConvertedText.class);
-                                        startActivity(i);
+
                                     }
                                 }, new Response.ErrorListener() {
 
