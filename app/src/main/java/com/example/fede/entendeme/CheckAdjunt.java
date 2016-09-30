@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -52,6 +53,7 @@ public class CheckAdjunt extends ActionBarActivity {
     public RequestQueue fRequestQueue;
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
     public String pathToVideoFile;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +69,11 @@ public class CheckAdjunt extends ActionBarActivity {
         Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
         fRequestQueue = Volley.newRequestQueue(CheckAdjunt.this);
-        //File myFile = new File(imageUri.getPath());
         pathToVideoFile = getRealPathFromURI(CheckAdjunt.this,imageUri);
+
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
+
 
         btnAdjuntOtherPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +101,7 @@ public class CheckAdjunt extends ActionBarActivity {
         builder.setMessage("¿Está seguro que desea convertir esta imagen?")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        onPreStartConnection();
                         Entendeme app = ((Entendeme)getApplicationContext());
 
                         Map<String, String> ConvRequest= new HashMap<String, String>();
@@ -126,7 +131,7 @@ public class CheckAdjunt extends ActionBarActivity {
 
                                             @Override
                                             public void onResponse(NetworkResponse response) {
-                                                //onConnectionFinished();
+                                                onConnectionFinished();
                                                 Intent i = new Intent(getBaseContext(), ConvertedText.class);
                                                 startActivity(i);
 
@@ -149,9 +154,6 @@ public class CheckAdjunt extends ActionBarActivity {
                                                 Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
                                                 // file name could found file base or direct access from real path
                                                 // for now just get bitmap data from ImageView
-                                                //params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), mAvatarImage.getDrawable()), "image/jpeg"));
-                                                //params.put("file", new DataPart("file_cover.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), imgPhoto.getDrawable()), "image/jpeg"));
-
                                                 InputStream is = null;
                                                 try {
                                                     is = new BufferedInputStream(new FileInputStream(pathToVideoFile));
@@ -232,8 +234,16 @@ public class CheckAdjunt extends ActionBarActivity {
         return(super.onOptionsItemSelected(item));
     }
 
+    public void onPreStartConnection() {
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    public void onConnectionFinished() {
+        spinner.setVisibility(View.GONE);
+    }
+
     public void onConnectionFailed(String error) {
-        this.setProgressBarIndeterminateVisibility(false);
+        spinner.setVisibility(View.GONE);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 

@@ -16,6 +16,15 @@
         android:maxWidth="250dp"
         android:maxHeight="250dp" />
 
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -48,6 +57,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:onClick="onClickContinueAdjunt" />
+
     </LinearLayout>
 
 </LinearLayout>
