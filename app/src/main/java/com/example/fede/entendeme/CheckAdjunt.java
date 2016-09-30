@@ -1,7 +1,10 @@
 package com.example.fede.entendeme;
 
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +30,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -41,6 +51,7 @@ public class CheckAdjunt extends ActionBarActivity {
     private static int SELECTED_PICTURE = 2;
     public RequestQueue fRequestQueue;
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
+    public String pathToVideoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,8 @@ public class CheckAdjunt extends ActionBarActivity {
         Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
         fRequestQueue = Volley.newRequestQueue(CheckAdjunt.this);
+        //File myFile = new File(imageUri.getPath());
+        pathToVideoFile = getRealPathFromURI(CheckAdjunt.this,imageUri);
 
         btnAdjuntOtherPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +102,7 @@ public class CheckAdjunt extends ActionBarActivity {
                         Map<String, String> ConvRequest= new HashMap<String, String>();
                         ConvRequest.put("nombreUsuario", app.getUsuario());
                         ConvRequest.put("nombreImagen", "test");
-                        ConvRequest.put("formatoImagen", ".jpg");
+                        ConvRequest.put("formatoImagen", pathToVideoFile.substring(pathToVideoFile.length() - 4,pathToVideoFile.length()));
 
                         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                                 CONV_REQUEST_URL, new JSONObject(ConvRequest),
@@ -104,6 +117,9 @@ public class CheckAdjunt extends ActionBarActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
+
+
+
                                         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
 
 
@@ -134,7 +150,23 @@ public class CheckAdjunt extends ActionBarActivity {
                                                 // file name could found file base or direct access from real path
                                                 // for now just get bitmap data from ImageView
                                                 //params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), mAvatarImage.getDrawable()), "image/jpeg"));
-                                                params.put("file", new DataPart("file_cover.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), imgPhoto.getDrawable()), "image/jpeg"));
+                                                //params.put("file", new DataPart("file_cover.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), imgPhoto.getDrawable()), "image/jpeg"));
+
+                                                InputStream is = null;
+                                                try {
+                                                    is = new BufferedInputStream(new FileInputStream(pathToVideoFile));
+                                                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                                    while (is.available() > 0) {
+                                                        bos.write(is.read());
+                                                    }
+                                                    params.put("file", new DataPart("file_cover.jpg",bos.toByteArray() , "image/jpeg"));
+                                                } catch (FileNotFoundException e) {
+                                                    e.printStackTrace();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+
+
 
                                                 return params;
                                             }
@@ -203,6 +235,21 @@ public class CheckAdjunt extends ActionBarActivity {
     public void onConnectionFailed(String error) {
         this.setProgressBarIndeterminateVisibility(false);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
 }
