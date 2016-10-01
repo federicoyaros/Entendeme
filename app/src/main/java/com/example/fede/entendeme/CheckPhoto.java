@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,8 +23,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +45,7 @@ public class CheckPhoto extends ActionBarActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public RequestQueue fRequestQueue;
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +61,9 @@ public class CheckPhoto extends ActionBarActivity {
         Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
         imgPhoto.setImageBitmap(imageBitmap);
         fRequestQueue = Volley.newRequestQueue(CheckPhoto.this);
+
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
 
         btnCut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +91,7 @@ public class CheckPhoto extends ActionBarActivity {
         builder.setMessage("¿Está seguro que desea convertir esta imagen?")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        onPreStartConnection();
                         Entendeme app = ((Entendeme)getApplicationContext());
 
                         Map<String, String> ConvRequest= new HashMap<String, String>();
@@ -92,10 +106,75 @@ public class CheckPhoto extends ActionBarActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
 
+                                        String url = null;
+                                        try {
+                                            url = response.getString( "rutaImagen" );
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+
+
+                                        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
+
+
+
+                                            @Override
+                                            public void onResponse(NetworkResponse response) {
+                                                onConnectionFinished();
+                                                String json = null;
+
+
+                                                json = new String(response.data);
+                                                json = trimMessage(json, "textoConvertido");
+
+                                                Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                                                i.putExtra("ConvText", json);
+                                                startActivity(i);
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                onConnectionFailed(error.toString());
+                                            }
+                                        }) {
+                                            @Override
+                                            protected Map<String, String> getParams() {
+                                                Map<String, String> params = new HashMap<>();
+                                                //params.put("api_token", "gh659gjhvdyudo973823tt9gvjf7i6ric75r76");
+                                                return params;
+                                            }
+
+                                            @Override
+                                            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
+                                                Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
+                                                // file name could found file base or direct access from real path
+                                                // for now just get bitmap data from ImageView
+                                                /*InputStream is = null;
+                                                try {
+                                                    is = new BufferedInputStream(new FileInputStream(pathToFile));
+                                                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                                    while (is.available() > 0) {
+                                                        bos.write(is.read());
+                                                    }*/
+                                                    params.put("file", new DataPart("file_cover.jpg",AppHelper.getFileDataFromDrawable(getBaseContext(), imgPhoto.getDrawable()) , "image/jpeg"));
+                                                /*} catch (FileNotFoundException e) {
+                                                    e.printStackTrace();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }*/
+
+
+
+                                                return params;
+                                            }
+                                        };
+                                        fRequestQueue.add(multipartRequest);
+
                                         //onConnectionFinished();
 
-                                        Intent i = new Intent(getBaseContext(), ConvertedText.class);
-                                        startActivity(i);
+
                                     }
                                 }, new Response.ErrorListener() {
 
@@ -151,8 +230,30 @@ public class CheckPhoto extends ActionBarActivity {
         return(super.onOptionsItemSelected(item));
     }
 
+    public void onPreStartConnection() {
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    public void onConnectionFinished() {
+        spinner.setVisibility(View.GONE);
+    }
+
     public void onConnectionFailed(String error) {
-        this.setProgressBarIndeterminateVisibility(false);
+        spinner.setVisibility(View.GONE);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    public String trimMessage(String json, String key){
+        String trimmedString = null;
+
+        try{
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString(key);
+        } catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return trimmedString;
     }
 }

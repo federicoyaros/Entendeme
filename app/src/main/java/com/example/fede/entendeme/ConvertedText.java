@@ -24,9 +24,19 @@ public class ConvertedText extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.converted_text);
-
+        Bundle extras = getIntent().getExtras();
         etConvertedText = (EditText)  findViewById(R.id.etConvertedText);
-        etConvertedText.setText("Acá va el texto que está escrito en la imagen que elegiste :)");
+
+        if (extras != null) {
+            String value = extras.getString("ConvText");
+            etConvertedText.setText(value);
+        }
+        else{
+            String value = "No se ha logrado la conversión";
+            etConvertedText.setText(value);
+        }
+
+
         btnShare = (ImageButton) findViewById(R.id.btnShare);
         btnSave = (ImageButton) findViewById(R.id.btnSave);
 

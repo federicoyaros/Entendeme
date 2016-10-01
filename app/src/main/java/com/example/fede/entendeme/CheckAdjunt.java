@@ -52,7 +52,7 @@ public class CheckAdjunt extends ActionBarActivity {
     private static int SELECTED_PICTURE = 2;
     public RequestQueue fRequestQueue;
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
-    public String pathToVideoFile;
+    public String pathToFile;
     private ProgressBar spinner;
 
     @Override
@@ -69,7 +69,7 @@ public class CheckAdjunt extends ActionBarActivity {
         Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
         fRequestQueue = Volley.newRequestQueue(CheckAdjunt.this);
-        pathToVideoFile = getRealPathFromURI(CheckAdjunt.this,imageUri);
+        pathToFile = getRealPathFromURI(CheckAdjunt.this,imageUri);
 
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
@@ -107,7 +107,7 @@ public class CheckAdjunt extends ActionBarActivity {
                         Map<String, String> ConvRequest= new HashMap<String, String>();
                         ConvRequest.put("nombreUsuario", app.getUsuario());
                         ConvRequest.put("nombreImagen", "test");
-                        ConvRequest.put("formatoImagen", pathToVideoFile.substring(pathToVideoFile.length() - 4,pathToVideoFile.length()));
+                        ConvRequest.put("formatoImagen", pathToFile.substring(pathToFile.length() - 4,pathToFile.length()));
 
                         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                                 CONV_REQUEST_URL, new JSONObject(ConvRequest),
@@ -132,7 +132,14 @@ public class CheckAdjunt extends ActionBarActivity {
                                             @Override
                                             public void onResponse(NetworkResponse response) {
                                                 onConnectionFinished();
+                                                String json = null;
+
+
+                                                    json = new String(response.data);
+                                                    json = trimMessage(json, "textoConvertido");
+
                                                 Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                                                i.putExtra("ConvText", json);
                                                 startActivity(i);
 
                                             }
@@ -156,7 +163,7 @@ public class CheckAdjunt extends ActionBarActivity {
                                                 // for now just get bitmap data from ImageView
                                                 InputStream is = null;
                                                 try {
-                                                    is = new BufferedInputStream(new FileInputStream(pathToVideoFile));
+                                                    is = new BufferedInputStream(new FileInputStream(pathToFile));
                                                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                                                     while (is.available() > 0) {
                                                         bos.write(is.read());
@@ -245,6 +252,20 @@ public class CheckAdjunt extends ActionBarActivity {
     public void onConnectionFailed(String error) {
         spinner.setVisibility(View.GONE);
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    public String trimMessage(String json, String key){
+        String trimmedString = null;
+
+        try{
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString(key);
+        } catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return trimmedString;
     }
 
     public String getRealPathFromURI(Context context, Uri contentUri) {
