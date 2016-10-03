@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import android.support.v7.app.AlertDialog;
@@ -27,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<HashMap<String, String>> list;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int SELECTED_PICTURE=2;
+    private File output=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +137,12 @@ public class MainActivity extends ActionBarActivity {
                 .setPositiveButton("Tomar foto", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File dir=
+                                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                        output = new File(dir, "ENTENDEME_" + timeStamp + ".jpg");
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(output));
+
                         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                         }
@@ -168,10 +179,12 @@ public class MainActivity extends ActionBarActivity {
             case REQUEST_IMAGE_CAPTURE:
                 if(resultCode==RESULT_OK)
                 {
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    /*Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");*/
                     Intent intent = new Intent(this, CheckPhoto.class);
-                    intent.putExtra("BitmapImage", imageBitmap);
+                    //intent.putExtra("BitmapImage", imageBitmap);
+                    Uri imageUri = Uri.fromFile(output);
+                    intent.putExtra("ImageUri", imageUri);
                     startActivity(intent);
                 }
                 break;

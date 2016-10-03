@@ -1,8 +1,11 @@
 package com.example.fede.entendeme;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -46,6 +49,7 @@ public class CheckPhoto extends ActionBarActivity {
     public RequestQueue fRequestQueue;
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
     private ProgressBar spinner;
+    public String pathToFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +60,14 @@ public class CheckPhoto extends ActionBarActivity {
         btnCut = (ImageButton) findViewById(R.id.btnCut);
         btnTakeOtherPhoto = (ImageButton) findViewById(R.id.btnTakeOtherPhoto);
         btnOk = (ImageButton) findViewById(R.id.btnOk);
-
+        Bundle extras = getIntent().getExtras();
         Intent intent = getIntent();
-        Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
-        imgPhoto.setImageBitmap(imageBitmap);
+        Uri imageUri = intent.getParcelableExtra("ImageUri");
+        imgPhoto.setImageURI(imageUri);
+        pathToFile = imageUri.getPath();
+
+        //Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
+        //imgPhoto.setImageBitmap(imageBitmap);
         fRequestQueue = Volley.newRequestQueue(CheckPhoto.this);
 
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
@@ -139,31 +147,25 @@ public class CheckPhoto extends ActionBarActivity {
                                                 onConnectionFailed(error.toString());
                                             }
                                         }) {
-                                            @Override
-                                            protected Map<String, String> getParams() {
-                                                Map<String, String> params = new HashMap<>();
-                                                //params.put("api_token", "gh659gjhvdyudo973823tt9gvjf7i6ric75r76");
-                                                return params;
-                                            }
+
 
                                             @Override
                                             protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
                                                 Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
-                                                // file name could found file base or direct access from real path
-                                                // for now just get bitmap data from ImageView
-                                                /*InputStream is = null;
+
+                                                InputStream is = null;
                                                 try {
                                                     is = new BufferedInputStream(new FileInputStream(pathToFile));
                                                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                                                     while (is.available() > 0) {
                                                         bos.write(is.read());
-                                                    }*/
-                                                    params.put("file", new DataPart("file_cover.jpg",AppHelper.getFileDataFromDrawable(getBaseContext(), imgPhoto.getDrawable()) , "image/jpeg"));
-                                                /*} catch (FileNotFoundException e) {
+                                                    }
+                                                    params.put("file", new DataPart("file_cover.jpg",bos.toByteArray() , "image/jpeg"));
+                                                } catch (FileNotFoundException e) {
                                                     e.printStackTrace();
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
-                                                }*/
+                                                }
 
 
 
@@ -171,8 +173,6 @@ public class CheckPhoto extends ActionBarActivity {
                                             }
                                         };
                                         fRequestQueue.add(multipartRequest);
-
-                                        //onConnectionFinished();
 
 
                                     }
@@ -255,5 +255,20 @@ public class CheckPhoto extends ActionBarActivity {
         }
 
         return trimmedString;
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }

@@ -149,18 +149,11 @@ public class CheckAdjunt extends ActionBarActivity {
                                                 onConnectionFailed(error.toString());
                                             }
                                         }) {
-                                            @Override
-                                            protected Map<String, String> getParams() {
-                                                Map<String, String> params = new HashMap<>();
-                                                //params.put("api_token", "gh659gjhvdyudo973823tt9gvjf7i6ric75r76");
-                                                return params;
-                                            }
 
                                             @Override
                                             protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
                                                 Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
-                                                // file name could found file base or direct access from real path
-                                                // for now just get bitmap data from ImageView
+
                                                 InputStream is = null;
                                                 try {
                                                     is = new BufferedInputStream(new FileInputStream(pathToFile));
@@ -181,8 +174,6 @@ public class CheckAdjunt extends ActionBarActivity {
                                             }
                                         };
                                         fRequestQueue.add(multipartRequest);
-
-                                        //onConnectionFinished();
 
 
                                     }
