@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,11 +53,13 @@ public class LoginActivity extends AppCompatActivity {
                             try {
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
+                                int id = Integer.parseInt(jsonResponse.getString("id"));
 
                                 if (success) {
                                     Entendeme app = ((Entendeme)getApplicationContext());
                                     app.setUsuario(etUsername.getText().toString());
                                     Intent i = new Intent(getBaseContext(), MainActivity.class);
+                                    i.putExtra("id", id);
                                     startActivity(i);
                                 } else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);

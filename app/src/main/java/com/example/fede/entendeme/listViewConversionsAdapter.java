@@ -1,5 +1,6 @@
 package com.example.fede.entendeme;
 
+import android.content.Context;
 import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,9 +19,9 @@ public class ListViewConversionsAdapter extends BaseAdapter
     TextView txtName;
     TextView txtDate;
 
-    public ListViewConversionsAdapter(Activity activity, ArrayList<HashMap<String, String>> list){
+    public ListViewConversionsAdapter(Context activity, ArrayList<HashMap<String, String>> list){
         super();
-        this.activity=activity;
+        this.activity= (Activity) activity;
         this.list=list;
     }
 

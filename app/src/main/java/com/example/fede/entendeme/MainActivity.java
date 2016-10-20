@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.fede.entendeme.Constants.*;
@@ -29,6 +32,7 @@ import static com.example.fede.entendeme.Constants.*;
 public class MainActivity extends ActionBarActivity {
 
     private ArrayList<HashMap<String, String>> list;
+    String url="http://entendemedb.esy.es/entendemeConnect/conversions.php";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int SELECTED_PICTURE=2;
     private File output=null;
@@ -38,70 +42,34 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
-        ListView listView=(ListView)findViewById(R.id.listViewConversions);
+        Intent mIntent = getIntent();
+        int userId = mIntent.getIntExtra("id", 0);
 
-        list=new ArrayList<HashMap<String,String>>();
+        ListView lv = (ListView)findViewById(R.id.listViewConversions);
+        TextView txtNoConversions = (TextView) findViewById(R.id.txtNoConversions);
+        final List<Integer> listViewIds = new ArrayList<Integer>();
+        final Downloader d=new Downloader(this,url,lv, txtNoConversions, userId, listViewIds);
+        d.execute();
+        int longitud = listViewIds.size();
+        //Toast.makeText(getApplicationContext(), String.valueOf(longitud), Toast.LENGTH_LONG).show();
+        registerForContextMenu(lv);
+        lv.setItemsCanFocus(false);
 
-        HashMap<String,String> temp=new HashMap<String, String>();
-        temp.put(FIRST_COLUMN, "Apuntes de la facu");
-        temp.put(SECOND_COLUMN, "15/08/16");
-        list.add(temp);
-
-        HashMap<String,String> temp2=new HashMap<String, String>();
-        temp2.put(FIRST_COLUMN, "Receta de cocina");
-        temp2.put(SECOND_COLUMN, "19/08/16");
-        list.add(temp2);
-
-        HashMap<String,String> temp3=new HashMap<String, String>();
-        temp3.put(FIRST_COLUMN, "Letra de canción");
-        temp3.put(SECOND_COLUMN, "20/08/16");
-        list.add(temp3);
-
-        HashMap<String,String> temp4=new HashMap<String, String>();
-        temp4.put(FIRST_COLUMN, "Notas varias");
-        temp4.put(SECOND_COLUMN, "15/08/16");
-        list.add(temp4);
-
-        HashMap<String,String> temp5=new HashMap<String, String>();
-        temp5.put(FIRST_COLUMN, "Mensaje para Nico");
-        temp5.put(SECOND_COLUMN, "19/08/16");
-        list.add(temp5);
-
-        HashMap<String,String> temp6=new HashMap<String, String>();
-        temp6.put(FIRST_COLUMN, "Apuntes de inglés");
-        temp6.put(SECOND_COLUMN, "20/08/16");
-        list.add(temp6);
-
-        HashMap<String,String> temp7=new HashMap<String, String>();
-        temp7.put(FIRST_COLUMN, "Primera conversión");
-        temp7.put(SECOND_COLUMN, "15/08/16");
-        list.add(temp7);
-
-        HashMap<String,String> temp8=new HashMap<String, String>();
-        temp8.put(FIRST_COLUMN, "Hola cómo va?");
-        temp8.put(SECOND_COLUMN, "19/08/16");
-        list.add(temp8);
-
-        HashMap<String,String> temp9=new HashMap<String, String>();
-        temp9.put(FIRST_COLUMN, "Todo bien");
-        temp9.put(SECOND_COLUMN, "20/08/16");
-        list.add(temp9);
-
-        ListViewConversionsAdapter adapter = new ListViewConversionsAdapter(this, list);
-        listView.setAdapter(adapter);
-
-        registerForContextMenu(listView);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
+               // Toast.makeText(getApplicationContext(), "hola", Toast.LENGTH_LONG).show();
+                //int selectedId = listViewIds.get(position);
                 Intent i = new Intent(getBaseContext(), ConvertedText.class);
+               // i.putExtra("selectedId", selectedId);
                 startActivity(i);
             }
 
         });
+
+
     }
 
     @Override

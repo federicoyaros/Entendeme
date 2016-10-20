@@ -27,4 +27,14 @@
         android:layout_marginRight="20dp"
         android:onClick="onClickFAB" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="No hay conversiones"
+        android:id="@+id/txtNoConversions"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/background_light" />
+
 </RelativeLayout>

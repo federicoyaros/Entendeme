@@ -66,7 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
                             else{
                                 if (success)
                                 {
+                                    int id = Integer.parseInt(jsonResponse.getString("id"));
                                     Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                                    i.putExtra("id", id);
                                     startActivity(i);
                                 }
                                 else
