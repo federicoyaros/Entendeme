@@ -1,5 +1,6 @@
 package com.example.fede.entendeme;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
@@ -32,10 +34,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +56,8 @@ public class CheckPhoto extends ActionBarActivity {
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
     private ProgressBar spinner;
     public String pathToFile;
+    public Uri UriCrop;
+    static final int PIC_CROP = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class CheckPhoto extends ActionBarActivity {
         btnOk = (ImageButton) findViewById(R.id.btnOk);
         Bundle extras = getIntent().getExtras();
         Intent intent = getIntent();
-        Uri imageUri = intent.getParcelableExtra("ImageUri");
+        final Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
         pathToFile = imageUri.getPath();
 
@@ -77,11 +84,7 @@ public class CheckPhoto extends ActionBarActivity {
         btnCut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CheckPhoto.this);
-                builder.setMessage("En construcción")
-                        .setNegativeButton("Volver", null)
-                        .create()
-                        .show();
+                performCrop(imageUri);
             }
         });
     }
@@ -210,6 +213,15 @@ public class CheckPhoto extends ActionBarActivity {
             intent.putExtra("BitmapImage", imageBitmap);
             startActivity(intent);
         }
+
+        if (requestCode == PIC_CROP && resultCode == RESULT_OK) {
+            if (data != null) {
+
+                imgPhoto.setImageURI(UriCrop);
+                //pathToFile = UriCrop.getPath();
+
+            }
+        }
     }
 
     @Override
@@ -272,6 +284,41 @@ public class CheckPhoto extends ActionBarActivity {
             if (cursor != null) {
                 cursor.close();
             }
+        }
+    }
+
+    private void performCrop(Uri picUri) {
+        try {
+
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            File dir=
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            File f = new File(dir, "ENTENDEME_" + timeStamp + ".jpg");
+            UriCrop = Uri.fromFile(f);
+
+            cropIntent.setDataAndType(picUri, "image/*");
+            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, UriCrop);
+            // set crop properties
+            cropIntent.putExtra("crop", "true");
+            // indicate aspect of desired crop
+            //cropIntent.putExtra("aspectX", 1);
+            //cropIntent.putExtra("aspectY", 1);
+            // indicate output X and Y
+            //cropIntent.putExtra("outputX", 1024);
+            //cropIntent.putExtra("outputY", 1024);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, PIC_CROP);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            // display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }
