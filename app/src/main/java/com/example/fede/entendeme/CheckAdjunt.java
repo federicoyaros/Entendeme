@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -173,6 +174,8 @@ public class CheckAdjunt extends ActionBarActivity {
                                                 return params;
                                             }
                                         };
+                                        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(1000 * 60, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                                         fRequestQueue.add(multipartRequest);
 
 
