@@ -57,7 +57,7 @@ public class CheckPhoto extends ActionBarActivity {
     private ProgressBar spinner;
     public String pathToFile;
     public Uri UriCrop;
-    static final int PIC_CROP = 1;
+    static final int PIC_CROP = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,7 +218,7 @@ public class CheckPhoto extends ActionBarActivity {
             if (data != null) {
 
                 imgPhoto.setImageURI(UriCrop);
-                //pathToFile = UriCrop.getPath();
+                pathToFile = UriCrop.getPath();
 
             }
         }

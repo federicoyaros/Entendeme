@@ -304,11 +304,11 @@ public class CheckAdjunt extends ActionBarActivity {
             // set crop properties
             cropIntent.putExtra("crop", "true");
             // indicate aspect of desired crop
-            //cropIntent.putExtra("aspectX", 1);
+            //cropIntent.putExtra("aspectX", 2);
             //cropIntent.putExtra("aspectY", 1);
             // indicate output X and Y
-            //cropIntent.putExtra("outputX", 1024);
-            //cropIntent.putExtra("outputY", 1024);
+            //cropIntent.putExtra("outputX", 2048);
+            //cropIntent.putExtra("outputY", 2048);
             // retrieve data on return
             cropIntent.putExtra("return-data", true);
             // start the activity - we handle returning in onActivityResult
