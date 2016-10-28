@@ -3,6 +3,7 @@ package com.example.fede.entendeme;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.widget.Toast;
 import java.util.Properties;
 import javax.mail.Address;
@@ -51,6 +52,8 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         Properties props = new Properties();
 
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -69,7 +72,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
 
         try {
 
-            MimeMessage mm = new MimeMessage(session);
+            Message mm = new MimeMessage(session);
 
             mm.setFrom(new InternetAddress("x"));
 
@@ -77,8 +80,9 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
 
             mm.setSubject(subject);
 
-            mm.setText(message);
+            //mm.setText(message);
 
+            mm.setContent(message, "text/html; charset=utf-8");
 
             Transport.send(mm);
 
@@ -87,4 +91,8 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         }
         return null;
     }
+
+
+
+
 }

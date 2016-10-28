@@ -4,8 +4,10 @@ package com.example.fede.entendeme;
  * Created by fede on 20/10/2016.
  */
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,6 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,12 +81,43 @@ public class Parser extends AsyncTask<Void,Integer,Integer>{
             }
 
             //LISTENET
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //Snackbar.make(view,players.get(position),Snackbar.LENGTH_SHORT).show();;
+                    int selectedId = listViewIds.get(position);
+                    Toast.makeText(c, Integer.toString(selectedId), Toast.LENGTH_SHORT).show();
+
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                int id = Integer.parseInt(jsonResponse.getString("id"));
+                                String conversion = jsonResponse.getString("conversion");
+                                Toast.makeText(c, conversion, Toast.LENGTH_SHORT).show();
+                                if (success) {
+                                    /*Entendeme app = ((Entendeme)getApplicationContext());
+                                    app.setUsuario(etUsername.getText().toString());*/
+                                    /*Intent i = new Intent(c, EditConversion.class);
+                                    i.putExtra("id", id);
+                                    i.putExtra("conversion", conversion);
+                                    //pd.dismiss();
+                                    startActivity(i);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+
+                    ConversionRequest conversionRequest = new ConversionRequest(Integer.toString(selectedId), responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(c);
+                    queue.add(conversionRequest);
                 }
-            });
+            })*/;
         }else
         {
             //Toast.makeText(c,"Unable to Parse",Toast.LENGTH_SHORT).show();
@@ -104,7 +142,7 @@ public class Parser extends AsyncTask<Void,Integer,Integer>{
                 //RETRIOEVE NAME
                 String idConversionString = jo.getString("id");
                 int idConversion = Integer.parseInt(idConversionString);
-                String name =jo.getString("conversion");
+                String name =jo.getString("title");
                 String date = jo.getString("lastModificationDate");
                 String userIdConversionString = jo.getString("userId");
                 int userIdConversion = Integer.parseInt(userIdConversionString);

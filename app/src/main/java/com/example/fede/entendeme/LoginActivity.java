@@ -1,8 +1,12 @@
 package com.example.fede.entendeme;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
+                                ProgressDialog pd=new ProgressDialog(LoginActivity.this);
+                                pd.setTitle("Procesando");
+                                pd.setMessage("Buscando datos...Por favor espere");
+                                pd.show();
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
                                 int id = Integer.parseInt(jsonResponse.getString("id"));
@@ -60,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                                     app.setUsuario(etUsername.getText().toString());
                                     Intent i = new Intent(getBaseContext(), MainActivity.class);
                                     i.putExtra("id", id);
+                                    pd.dismiss();
                                     startActivity(i);
                                 } else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -94,7 +103,5 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(getBaseContext(), Prueba.class);
         startActivity(i);
     }
-
-
 }
 

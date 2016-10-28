@@ -29,7 +29,10 @@
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         android:hint="Nombre de usuario"
-        android:maxLength="30" />
+        android:maxLength="30"
+        android:lines="1"
+        android:ellipsize="end"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:layout_width="match_parent"
@@ -44,7 +47,10 @@
         android:layout_weight="0.2"
         android:paddingLeft="10dp"
         android:hint="Mail"
-        android:maxLength="30" />
+        android:maxLength="30"
+        android:lines="1"
+        android:ellipsize="end"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:layout_width="match_parent"
@@ -63,7 +69,8 @@
         android:password="true"
         android:typeface="normal"
         android:hint="Contraseña"
-        android:maxLength="30" />
+        android:maxLength="30"
+        android:lines="1" />
 
     <Button
         android:layout_width="match_parent"

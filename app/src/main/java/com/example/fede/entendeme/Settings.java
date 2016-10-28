@@ -6,11 +6,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by fede on 8/9/2016.
@@ -27,6 +29,20 @@ public class Settings extends ActionBarActivity {
         listViewSettings = (ListView) findViewById(R.id.listViewSettings);
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, settings);
         listViewSettings.setAdapter(adapter);
+
+        listViewSettings.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Toast.makeText(Settings.this, "hola", Toast.LENGTH_SHORT).show();
+                //int selectedId = listViewIds.get(position);
+                //Intent i = new Intent(getBaseContext(), ConvertedText.class);
+                // i.putExtra("selectedId", selectedId);
+                //startActivity(i);
+            }
+
+        });
     }
 
     @Override
