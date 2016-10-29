@@ -16,6 +16,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
@@ -40,6 +43,13 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                     builder.setMessage("Debe completar todos los datos")
+                            .setNegativeButton("Volver", null)
+                            .create()
+                            .show();
+                }else if(!emailValidator(mail))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("El formato de mail ingresado es inválido")
                             .setNegativeButton("Volver", null)
                             .create()
                             .show();
@@ -94,5 +104,15 @@ public class RegisterActivity extends AppCompatActivity {
             }
             }
         });
+    }
+
+    public boolean emailValidator(String email)
+    {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

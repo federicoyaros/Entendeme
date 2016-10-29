@@ -310,6 +310,9 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
             Intent intent = new Intent(getBaseContext(), Settings.class);
+            Intent mIntent = getIntent();
+            int id = mIntent.getIntExtra("id", 0);
+            intent.putExtra("id", id);
             startActivity(intent);
             return(true);
         case R.id.action_logout:

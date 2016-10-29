@@ -30,12 +30,20 @@ public class Settings extends ActionBarActivity {
         ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, settings);
         listViewSettings.setAdapter(adapter);
 
+
         listViewSettings.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Toast.makeText(Settings.this, "hola", Toast.LENGTH_SHORT).show();
+                if(position == 0)
+                {
+                    Intent intent = new Intent(getBaseContext(), ChangeMail.class);
+                    Intent mIntent = getIntent();
+                    int userId = mIntent.getIntExtra("id", 0);
+                    intent.putExtra("id", userId);
+                    startActivity(intent);
+                }
                 //int selectedId = listViewIds.get(position);
                 //Intent i = new Intent(getBaseContext(), ConvertedText.class);
                 // i.putExtra("selectedId", selectedId);
