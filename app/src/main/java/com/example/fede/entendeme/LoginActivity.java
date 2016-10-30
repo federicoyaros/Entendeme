@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickRecover (View view)
     {
-        Intent i = new Intent(getBaseContext(), Prueba.class);
+        Intent i = new Intent(getBaseContext(), RecoverActivity.class);
         startActivity(i);
     }
 }

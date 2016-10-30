@@ -83,6 +83,7 @@ public class ChangeMail extends ActionBarActivity {
                                         Intent mIntent = getIntent();
                                         int userId = mIntent.getIntExtra("id", 0);
                                         intent.putExtra("id", userId);
+                                        Toast.makeText(ChangeMail.this, "Mail modificado correctamente", Toast.LENGTH_SHORT).show();
                                         startActivity(intent);
                                     }
                                     else
