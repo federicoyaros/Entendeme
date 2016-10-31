@@ -79,7 +79,7 @@ public class EditConversion extends ActionBarActivity {
                                 Bundle extras = getIntent().getExtras();
                                 int id = extras.getInt("userId");
                                 i.putExtra("id", id);
-                                Toast.makeText(EditConversion.this, "Conversión modificada", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditConversion.this, "Conversión modificada", Toast.LENGTH_LONG).show();
                                 startActivity(i);
                                 //boolean success = jsonResponse.getBoolean("success");
                                 //if (success)
@@ -132,6 +132,9 @@ public class EditConversion extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
             Intent intent = new Intent(getBaseContext(), Settings.class);
+            Bundle extras = getIntent().getExtras();
+            int id = extras.getInt("userId");
+            intent.putExtra("id", id);
             startActivity(intent);
             return(true);
         case R.id.action_logout:

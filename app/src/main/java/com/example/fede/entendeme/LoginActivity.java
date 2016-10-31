@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                     pd.dismiss();
                                     startActivity(i);
                                 } else {
+                                    pd.dismiss();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                     builder.setMessage("Datos incorrectos")
                                             .setNegativeButton("Volver", null)

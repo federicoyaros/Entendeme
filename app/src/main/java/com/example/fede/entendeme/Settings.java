@@ -43,6 +43,20 @@ public class Settings extends ActionBarActivity {
                     int userId = mIntent.getIntExtra("id", 0);
                     intent.putExtra("id", userId);
                     startActivity(intent);
+                }else if(position == 1)
+                {
+                    Intent intent = new Intent(getBaseContext(), ChangePassword.class);
+                    Intent mIntent = getIntent();
+                    int userId = mIntent.getIntExtra("id", 0);
+                    intent.putExtra("id", userId);
+                    startActivity(intent);
+                }else if(position == 2)
+                {
+                    Intent intent = new Intent(getBaseContext(), AboutEntendeme.class);
+                    Intent mIntent = getIntent();
+                    int userId = mIntent.getIntExtra("id", 0);
+                    intent.putExtra("id", userId);
+                    startActivity(intent);
                 }
                 //int selectedId = listViewIds.get(position);
                 //Intent i = new Intent(getBaseContext(), ConvertedText.class);

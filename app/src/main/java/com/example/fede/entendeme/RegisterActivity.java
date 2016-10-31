@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(existingUser)
                             {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Ya existe un usuario con ese nombre")
+                                builder.setMessage("Ya existe un usuario con esos datos")
                                         .setNegativeButton("Volver", null)
                                         .create()
                                         .show();
