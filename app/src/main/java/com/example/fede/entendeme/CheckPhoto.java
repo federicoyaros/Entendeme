@@ -55,6 +55,7 @@ public class CheckPhoto extends ActionBarActivity {
     public RequestQueue fRequestQueue;
     private static final String CONV_REQUEST_URL = "http://52.43.54.198:8080/entendeme/listaRequest/";
     private ProgressBar spinner;
+    private File output=null;
     public String pathToFile;
     public Uri UriCrop;
     static final int PIC_CROP = 2;
@@ -94,6 +95,13 @@ public class CheckPhoto extends ActionBarActivity {
     public void onClickTakeOtherPhoto(View view)
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File dir=
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        output = new File(dir, "ENTENDEME_" + timeStamp + ".jpg");
+
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(output));
+
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -210,10 +218,12 @@ public class CheckPhoto extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
             Intent intent = new Intent(this, CheckPhoto.class);
-            intent.putExtra("BitmapImage", imageBitmap);
+            //intent.putExtra("BitmapImage", imageBitmap);
+            Uri imageUri = Uri.fromFile(output);
+            intent.putExtra("ImageUri", imageUri);
             intent.putExtra("id", userId);
             startActivity(intent);
         }

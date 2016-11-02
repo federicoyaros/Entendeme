@@ -16,7 +16,7 @@
         android:id="@+id/date"
         android:layout_height="65dp"
         android:layout_width="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="1.2"
         android:gravity="center_vertical"
         />
 
