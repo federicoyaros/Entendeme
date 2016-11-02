@@ -31,14 +31,18 @@ public class Downloader extends AsyncTask<Void,Integer,String> {
     ProgressDialog pd;
     TextView txtNoConversions;
     List<Integer> listViewIds;
+    List<String> listViewTitles;
+    List<String> listViewDates;
     int id;
-    public Downloader(Context c, String address, ListView lv, TextView txtNoConversions, int id, List<Integer> listViewIds) {
+    public Downloader(Context c, String address, ListView lv, TextView txtNoConversions, int id, List<Integer> listViewIds, List<String> listViewTitles, List<String> listViewDates) {
         this.c = c;
         this.address = address;
         this.lv = lv;
         this.txtNoConversions = txtNoConversions;
         this.id = id;
         this.listViewIds = listViewIds;
+        this.listViewTitles = listViewTitles;
+        this.listViewDates = listViewDates;
     }
     //B4 JOB STARTS
     @Override
@@ -60,7 +64,7 @@ public class Downloader extends AsyncTask<Void,Integer,String> {
         pd.dismiss();;
         if(s != null)
         {
-            Parser p=new Parser(c,s,lv, txtNoConversions, id, listViewIds);
+            Parser p=new Parser(c,s,lv, txtNoConversions, id, listViewIds, listViewTitles, listViewDates);
             p.execute();
         }else
         {

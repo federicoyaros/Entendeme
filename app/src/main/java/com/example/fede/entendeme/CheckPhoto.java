@@ -58,6 +58,7 @@ public class CheckPhoto extends ActionBarActivity {
     public String pathToFile;
     public Uri UriCrop;
     static final int PIC_CROP = 2;
+    public int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class CheckPhoto extends ActionBarActivity {
         final Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
         pathToFile = imageUri.getPath();
+        userId = intent.getIntExtra("id", 0);
 
         //Bitmap imageBitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
         //imgPhoto.setImageBitmap(imageBitmap);
@@ -141,6 +143,7 @@ public class CheckPhoto extends ActionBarActivity {
 
                                                 Intent i = new Intent(getBaseContext(), ConvertedText.class);
                                                 i.putExtra("ConvText", json);
+                                                i.putExtra("id", userId);
                                                 startActivity(i);
 
                                             }
@@ -211,6 +214,7 @@ public class CheckPhoto extends ActionBarActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             Intent intent = new Intent(this, CheckPhoto.class);
             intent.putExtra("BitmapImage", imageBitmap);
+            intent.putExtra("id", userId);
             startActivity(intent);
         }
 
@@ -235,6 +239,9 @@ public class CheckPhoto extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
             Intent intent = new Intent(getBaseContext(), Settings.class);
+            Intent mIntent = getIntent();
+            int id = mIntent.getIntExtra("id", 0);
+            intent.putExtra("id", userId);
             startActivity(intent);
             return(true);
         case R.id.action_logout:

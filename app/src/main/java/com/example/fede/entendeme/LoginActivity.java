@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin, btnForgotPassword, btnRegister;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,10 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                ProgressDialog pd=new ProgressDialog(LoginActivity.this);
-                                pd.setTitle("Procesando");
-                                pd.setMessage("Buscando datos...Por favor espere");
-                                pd.show();
+                                //ProgressDialog pd=new ProgressDialog(LoginActivity.this);
+                                //pd.setTitle("Procesando");
+                                //pd.setMessage("Buscando datos...Por favor espere");
+                                //pd.show();
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
                                 int id = Integer.parseInt(jsonResponse.getString("id"));
@@ -85,6 +86,10 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     };
 
+                    pd=new ProgressDialog(LoginActivity.this);
+                    pd.setTitle("Procesando");
+                    pd.setMessage("Buscando datos...Por favor espere");
+                    pd.show();
                     LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                     queue.add(loginRequest);

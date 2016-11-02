@@ -61,6 +61,7 @@ public class CheckAdjunt extends ActionBarActivity {
     public String pathToFile;
     private ProgressBar spinner;
     public Uri UriCrop;
+    public int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,9 @@ public class CheckAdjunt extends ActionBarActivity {
         Intent intent = getIntent();
         final Uri imageUri = intent.getParcelableExtra("ImageUri");
         imgPhoto.setImageURI(imageUri);
+
+        userId = intent.getIntExtra("id", 0);
+
         fRequestQueue = Volley.newRequestQueue(CheckAdjunt.this);
         pathToFile = getRealPathFromURI(CheckAdjunt.this,imageUri);
 
@@ -143,6 +147,9 @@ public class CheckAdjunt extends ActionBarActivity {
 
                                                 Intent i = new Intent(getBaseContext(), ConvertedText.class);
                                                 i.putExtra("ConvText", json);
+                                                Intent mIntent = getIntent();
+                                                int id = mIntent.getIntExtra("id", 0);
+                                                i.putExtra("id", userId);
                                                 startActivity(i);
 
                                             }
@@ -212,6 +219,7 @@ public class CheckAdjunt extends ActionBarActivity {
             Uri imageUri = data.getData();
                     Intent i = new Intent(this, CheckAdjunt.class);
                     i.putExtra("ImageUri", imageUri);
+                    i.putExtra("id", userId);
                     startActivity(i);
         }
 
@@ -236,6 +244,9 @@ public class CheckAdjunt extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
             Intent intent = new Intent(getBaseContext(), Settings.class);
+            Intent mIntent = getIntent();
+            int id = mIntent.getIntExtra("id", 0);
+            intent.putExtra("id", userId);
             startActivity(intent);
             return(true);
         case R.id.action_logout:

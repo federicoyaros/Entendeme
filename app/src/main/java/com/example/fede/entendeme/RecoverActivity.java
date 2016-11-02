@@ -28,6 +28,7 @@ public class RecoverActivity extends AppCompatActivity {
 
     EditText etUsername;
     Button btnRecover;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class RecoverActivity extends AppCompatActivity {
                                 String password = jsonResponse.getString("password");
                                 if(invalidUser)
                                 {
+                                    pd.dismiss();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RecoverActivity.this);
                                     builder.setMessage("No existe un usuario con los datos ingresados")
                                             .setNegativeButton("Volver", null)
@@ -74,11 +76,10 @@ public class RecoverActivity extends AppCompatActivity {
                                     {
                                         Gmail androidEmail = new Gmail();
                                         androidEmail.Gmail(mail, password);
-
                                         try {
                                             androidEmail.createEmailMessage();
-
                                             androidEmail.sendEmail(RecoverActivity.this);
+                                            pd.dismiss();
                                             Toast.makeText(RecoverActivity.this, "Se ha enviado un mail a " + mail, Toast.LENGTH_LONG).show();
                                             Intent i = new Intent(getBaseContext(), LoginActivity.class);
                                             startActivity(i);
@@ -90,6 +91,7 @@ public class RecoverActivity extends AppCompatActivity {
                                     }
                                     else
                                     {
+                                        pd.dismiss();
                                         AlertDialog.Builder builder = new AlertDialog.Builder(RecoverActivity.this);
                                         builder.setMessage("Envío fallido")
                                                 .setNegativeButton("Volver", null)
@@ -104,7 +106,10 @@ public class RecoverActivity extends AppCompatActivity {
                             }
                         }
                     };
-
+                    pd=new ProgressDialog(RecoverActivity.this);
+                    pd.setTitle("Procesando");
+                    pd.setMessage("Completando la acción...Por favor espere");
+                    pd.show();
                     RecoverRequest registerRequest = new RecoverRequest(username, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(RecoverActivity.this);
                     queue.add(registerRequest);

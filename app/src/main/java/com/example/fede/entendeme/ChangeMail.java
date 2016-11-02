@@ -29,6 +29,7 @@ public class ChangeMail extends ActionBarActivity {
 
     EditText etNewMail;
     Button btnChangeMail;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class ChangeMail extends ActionBarActivity {
                                 boolean existingMail = jsonResponse.getBoolean("existingMail");
                                 if(existingMail)
                                 {
+                                    pd.dismiss();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(ChangeMail.this);
                                     builder.setMessage("El mail ingresado ya está registrado, por favor indique otro")
                                             .setNegativeButton("Volver", null)
@@ -83,11 +85,13 @@ public class ChangeMail extends ActionBarActivity {
                                         Intent mIntent = getIntent();
                                         int userId = mIntent.getIntExtra("id", 0);
                                         intent.putExtra("id", userId);
+                                        pd.dismiss();
                                         Toast.makeText(ChangeMail.this, "Mail modificado correctamente", Toast.LENGTH_SHORT).show();
                                         startActivity(intent);
                                     }
                                     else
                                     {
+                                        pd.dismiss();
                                         AlertDialog.Builder builder = new AlertDialog.Builder(ChangeMail.this);
                                         builder.setMessage("Registro fallido")
                                                 .setNegativeButton("Volver", null)
@@ -102,6 +106,10 @@ public class ChangeMail extends ActionBarActivity {
                             }
                         }
                     };
+                    pd=new ProgressDialog(ChangeMail.this);
+                    pd.setTitle("Procesando");
+                    pd.setMessage("Completando la acción...Por favor espere");
+                    pd.show();
                     Intent mIntent = getIntent();
                     int userId = mIntent.getIntExtra("id", 0);
                     ChangeMailRequest changeMailRequest = new ChangeMailRequest(String.valueOf(userId), mail, responseListener);

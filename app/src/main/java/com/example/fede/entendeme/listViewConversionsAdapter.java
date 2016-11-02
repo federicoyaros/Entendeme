@@ -53,13 +53,15 @@ public class ListViewConversionsAdapter extends BaseAdapter
 
         LayoutInflater inflater=activity.getLayoutInflater();
 
-        if(convertView == null){
+        //if(convertView == null){
 
             convertView=inflater.inflate(R.layout.list_view_conversions_columns, null);
 
             txtName=(TextView) convertView.findViewById(R.id.name);
             txtDate=(TextView) convertView.findViewById(R.id.date);
-        }
+
+
+        //}
 
         HashMap<String, String> map=list.get(position);
         txtName.setText(map.get(FIRST_COLUMN));

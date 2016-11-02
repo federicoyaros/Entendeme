@@ -1,6 +1,7 @@
 package com.example.fede.entendeme;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -25,6 +26,7 @@ public class ChangePassword extends ActionBarActivity{
 
     EditText etNewPassword;
     Button btnChangePassword;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class ChangePassword extends ActionBarActivity{
                                         Intent mIntent = getIntent();
                                         int userId = mIntent.getIntExtra("id", 0);
                                         intent.putExtra("id", userId);
+                                        pd.dismiss();
                                         Toast.makeText(ChangePassword.this, "Contraseña modificada correctamente", Toast.LENGTH_LONG).show();
                                         startActivity(intent);
                                     }
@@ -72,6 +75,10 @@ public class ChangePassword extends ActionBarActivity{
                             }
                         }
                     };
+                    pd=new ProgressDialog(ChangePassword.this);
+                    pd.setTitle("Procesando");
+                    pd.setMessage("Completando la acción...Por favor espere");
+                    pd.show();
                     Intent mIntent = getIntent();
                     int userId = mIntent.getIntExtra("id", 0);
                     ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(String.valueOf(userId), password, responseListener);

@@ -1,5 +1,6 @@
 package com.example.fede.entendeme;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +47,10 @@ public class MainActivity extends ActionBarActivity {
     private static final int SELECTED_PICTURE=2;
     private File output=null;
     final List<Integer> listViewIds = new ArrayList<Integer>();
+    final List<String> listViewTitles = new ArrayList<String>();
+    final List<String> listViewDates = new ArrayList<String>();
+    public int userId;
+    private ProgressDialog pdShare, pdDelete, pdEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +58,32 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.main_screen);
 
         Intent mIntent = getIntent();
-        final int userId = mIntent.getIntExtra("id", 0);
+        userId = mIntent.getIntExtra("id", 0);
 
         ListView lv = (ListView)findViewById(R.id.listViewConversions);
         TextView txtNoConversions = (TextView) findViewById(R.id.txtNoConversions);
         //final List<Integer> listViewIds = new ArrayList<Integer>();
-        final Downloader d=new Downloader(this,url,lv, txtNoConversions, userId, listViewIds);
+        final Downloader d=new Downloader(this,url,lv, txtNoConversions, userId, listViewIds, listViewTitles, listViewDates);
         d.execute();
-        int longitud = listViewIds.size();
+        //Toast.makeText(MainActivity.this, String.valueOf(lv.getAdapter().getCount()), Toast.LENGTH_LONG).show();
+        //int longitud = listViewIds.size();
         //Toast.makeText(getApplicationContext(), String.valueOf(longitud), Toast.LENGTH_LONG).show();
+        //for(int i=0; i<=listViewIds.size(); i++){
+        //HashMap<String, String> tem = new HashMap<String, String>();
+        //tem.put(FIRST_COLUMN, listViewTitles.get(i));
+        //tem.put(SECOND_COLUMN, listViewDates.get(i));
+
+        //}
         registerForContextMenu(lv);
         lv.setItemsCanFocus(false);
+
+
+
+
+
+
+
+
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -94,6 +116,7 @@ public class MainActivity extends ActionBarActivity {
                                 i.putExtra("title", title);
                                 i.putExtra("conversion", conversion);
                                 //pd.dismiss();
+                                pdEdit.dismiss();
                                 startActivity(i);
                             }
 
@@ -102,7 +125,10 @@ public class MainActivity extends ActionBarActivity {
                         }
                     }
                 };
-
+                pdEdit=new ProgressDialog(MainActivity.this);
+                pdEdit.setTitle("Procesando");
+                pdEdit.setMessage("Completando la acción...Por favor espere");
+                pdEdit.show();
                 ConversionRequest conversionRequest = new ConversionRequest(Integer.toString(selectedId), responseListener);
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(conversionRequest);
@@ -150,12 +176,17 @@ public class MainActivity extends ActionBarActivity {
                         sendIntent.setAction(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_TEXT, conversion);
                         sendIntent.setType("text/plain");
+                        pdShare.dismiss();
                         startActivity(sendIntent);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             };
+            pdShare=new ProgressDialog(MainActivity.this);
+            pdShare.setTitle("Procesando");
+            pdShare.setMessage("Completando la acción...Por favor espere");
+            pdShare.show();
             int indexPosition = info.position;
             int conversionIdSelected = listViewIds.get(indexPosition);
             ConversionRequest conversionRequest = new ConversionRequest(Integer.toString(conversionIdSelected), responseListener);
@@ -178,6 +209,7 @@ public class MainActivity extends ActionBarActivity {
                                         Intent mIntent = getIntent();
                                         int id = mIntent.getIntExtra("id", 0);
                                         i.putExtra("id", id);
+                                        pdDelete.dismiss();
                                         Toast.makeText(MainActivity.this, "Conversión eliminada", Toast.LENGTH_SHORT).show();
                                         startActivity(i);
                                     }
@@ -187,6 +219,10 @@ public class MainActivity extends ActionBarActivity {
                                     }
                                 }
                             };
+                            pdDelete=new ProgressDialog(MainActivity.this);
+                            pdDelete.setTitle("Procesando");
+                            pdDelete.setMessage("Completando la acción...Por favor espere");
+                            pdDelete.show();
                             int index = info.position;
                             int conversionId = listViewIds.get(index);
                             DeleteConversionRequest deleteConversionRequest = new DeleteConversionRequest(String.valueOf(conversionId), responseListener);
@@ -264,6 +300,9 @@ public class MainActivity extends ActionBarActivity {
                     //intent.putExtra("BitmapImage", imageBitmap);
                     Uri imageUri = Uri.fromFile(output);
                     intent.putExtra("ImageUri", imageUri);
+                    Intent mIntent = getIntent();
+                    int id = mIntent.getIntExtra("id", 0);
+                    intent.putExtra("id", id);
                     startActivity(intent);
                 }
                 break;
@@ -289,6 +328,9 @@ public class MainActivity extends ActionBarActivity {
                     Uri imageUri = data.getData();
                     Intent i = new Intent(this, CheckAdjunt.class);
                     i.putExtra("ImageUri", imageUri);
+                    Intent mIntent = getIntent();
+                    int id = mIntent.getIntExtra("id", 0);
+                    i.putExtra("id", id);
                     startActivity(i);
                 }
                 break;

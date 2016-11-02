@@ -38,8 +38,8 @@ public class Gmail {
 
 
     public void Gmail(String mail, String password) {
-        this.fromEmail = "x";
-        this.fromPassword = "x";
+        this.fromEmail = "entendemeutn@gmail.com";
+        this.fromPassword = "entendeme123";
         this.toEmail = mail;
         this.emailSubject = "Entendeme - Recupero de contraseña";
         this.emailBody = "Su contraseña de Entendeme es: " + password;

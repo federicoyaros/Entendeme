@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,17 +41,21 @@ public class Parser extends AsyncTask<Void,Integer,Integer>{
     String data;
     TextView txtNoConversions;
     List<Integer> listViewIds;
+    List<String> listViewTitles;
+    List<String> listViewDates;
     int id;
     //ArrayList<String> players=new ArrayList<>();
     final ArrayList<HashMap<String, String>> players = new ArrayList<HashMap<String,String>>();
     ProgressDialog pd;
-    public Parser(Context c, String data, ListView lv, TextView txtNoConversions, int id, List<Integer> listViewIds) {
+    public Parser(Context c, String data, ListView lv, TextView txtNoConversions, int id, List<Integer> listViewIds, List<String> listViewTitles, List<String> listViewDates) {
         this.c = c;
         this.data = data;
         this.lv = lv;
         this.txtNoConversions = txtNoConversions;
         this.id = id;
         this.listViewIds = listViewIds;
+        this.listViewTitles = listViewTitles;
+        this.listViewDates = listViewDates;
     }
     @Override
     protected void onPreExecute() {
@@ -153,6 +158,8 @@ public class Parser extends AsyncTask<Void,Integer,Integer>{
                     //ADD IT TO OUR ARRAYLIST
                     players.add(temp);
                     listViewIds.add(idConversion);
+                    listViewTitles.add(name);
+                    listViewDates.add(date);
                 }
             }
             return 1;

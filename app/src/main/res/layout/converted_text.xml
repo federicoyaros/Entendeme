@@ -6,7 +6,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="390dp"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/etConvertedText"
@@ -16,7 +16,7 @@
         android:lines="19"
         android:background="@color/highlighted_text_material_dark"
         android:textColor="@android:color/background_light"
-        android:gravity="top|left"/>
+        android:gravity="top|left" />
 
     <LinearLayout
         android:orientation="horizontal"

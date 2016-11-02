@@ -1,6 +1,7 @@
 package com.example.fede.entendeme;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                             boolean existingUser = jsonResponse.getBoolean("existingUser");
                             if(existingUser)
                             {
+                                pd.dismiss();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 builder.setMessage("Ya existe un usuario con esos datos")
                                         .setNegativeButton("Volver", null)
@@ -79,10 +83,12 @@ public class RegisterActivity extends AppCompatActivity {
                                     int id = Integer.parseInt(jsonResponse.getString("id"));
                                     Intent i = new Intent(RegisterActivity.this, MainActivity.class);
                                     i.putExtra("id", id);
+                                    //pd.dismiss();
                                     startActivity(i);
                                 }
                                 else
                                 {
+                                    pd.dismiss();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                     builder.setMessage("Registro fallido")
                                         .setNegativeButton("Volver", null)
@@ -98,6 +104,10 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
+                    pd=new ProgressDialog(RegisterActivity.this);
+                    pd.setTitle("Procesando");
+                    pd.setMessage("Completando la acción...Por favor espere");
+                    pd.show();
                 RegisterRequest registerRequest = new RegisterRequest(username, mail, password, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);

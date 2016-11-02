@@ -1,6 +1,7 @@
 package com.example.fede.entendeme;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -24,7 +25,7 @@ import org.json.JSONObject;
 public class EditConversion extends ActionBarActivity {
     EditText etTitle, etConvertedText;
     ImageButton btnShare, btnSave;
-
+    private ProgressDialog pd, pdShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,15 @@ public class EditConversion extends ActionBarActivity {
             @Override
             public void onClick(View v)
             {
+                pdShare=new ProgressDialog(EditConversion.this);
+                pdShare.setTitle("Procesando");
+                pdShare.setMessage("Completando la acción...Por favor espere");
+                pdShare.show();
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, etConvertedText.getText().toString());
                 sendIntent.setType("text/plain");
+                pdShare.dismiss();
                 startActivity(sendIntent);
             }
         });
@@ -79,6 +85,7 @@ public class EditConversion extends ActionBarActivity {
                                 Bundle extras = getIntent().getExtras();
                                 int id = extras.getInt("userId");
                                 i.putExtra("id", id);
+                                pd.dismiss();
                                 Toast.makeText(EditConversion.this, "Conversión modificada", Toast.LENGTH_LONG).show();
                                 startActivity(i);
                                 //boolean success = jsonResponse.getBoolean("success");
@@ -105,6 +112,10 @@ public class EditConversion extends ActionBarActivity {
                             }
                         }
                     };
+                    pd=new ProgressDialog(EditConversion.this);
+                    pd.setTitle("Procesando");
+                    pd.setMessage("Completando la acción...Por favor espere");
+                    pd.show();
                     Bundle extras = getIntent().getExtras();
                     int conversionId = extras.getInt("id");
                     String titulo = etTitle.getText().toString();

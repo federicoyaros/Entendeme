@@ -1,5 +1,7 @@
 package com.example.fede.entendeme;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +15,13 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by fede on 8/9/2016.
@@ -58,10 +67,6 @@ public class Settings extends ActionBarActivity {
                     intent.putExtra("id", userId);
                     startActivity(intent);
                 }
-                //int selectedId = listViewIds.get(position);
-                //Intent i = new Intent(getBaseContext(), ConvertedText.class);
-                // i.putExtra("selectedId", selectedId);
-                //startActivity(i);
             }
 
         });
@@ -78,6 +83,9 @@ public class Settings extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
         case R.id.action_settings:
             Intent intent = new Intent(getBaseContext(), Settings.class);
+            Intent mIntent = getIntent();
+            int userId = mIntent.getIntExtra("id", 0);
+            intent.putExtra("id", userId);
             startActivity(intent);
             return(true);
         case R.id.action_logout:
