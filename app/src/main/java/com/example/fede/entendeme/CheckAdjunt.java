@@ -321,7 +321,7 @@ public class CheckAdjunt extends ActionBarActivity {
             //cropIntent.putExtra("outputX", 2048);
             //cropIntent.putExtra("outputY", 2048);
             // retrieve data on return
-            cropIntent.putExtra("return-data", true);
+            cropIntent.putExtra("return-data", false);
             // start the activity - we handle returning in onActivityResult
             startActivityForResult(cropIntent, PIC_CROP);
         }

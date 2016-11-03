@@ -326,7 +326,7 @@ public class CheckPhoto extends ActionBarActivity {
             //cropIntent.putExtra("outputX", 1024);
             //cropIntent.putExtra("outputY", 1024);
             // retrieve data on return
-            cropIntent.putExtra("return-data", true);
+            cropIntent.putExtra("return-data", false);
             // start the activity - we handle returning in onActivityResult
             startActivityForResult(cropIntent, PIC_CROP);
         }
